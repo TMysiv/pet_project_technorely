@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post} from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { CreateUserDto } from './dto/create-user.dto';
@@ -57,9 +57,9 @@ export class AuthController {
   }
 
   @ApiOperation({ summary: 'Logout from system' })
-  @ApiOkResponse({ description: 'Logout Successfully',status:200 })
+  @ApiOkResponse({ description: 'Logout Successfully', status: 200 })
   @Get('/logout')
   logout() {
-    return 'Logout Successfully'
+    return 'Logout Successfully';
   }
 }

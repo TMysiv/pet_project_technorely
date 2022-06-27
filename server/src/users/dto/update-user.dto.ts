@@ -1,55 +1,43 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsEmail,
+  IsEmpty,
   IsMobilePhone,
-  IsNotEmpty,
+  IsOptional,
   IsString,
   Length,
 } from 'class-validator';
 
-export class CreateUserDto {
+export class UpdateUserDto {
   @IsString()
-  @IsEmail()
-  @IsNotEmpty()
-  @ApiProperty({ example: 'qwerty@gamil.com' })
-  readonly email: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @Length(4, 10)
-  @ApiProperty({ example: '12345678' })
-  readonly password: string;
-
-  @IsString()
-  @IsNotEmpty()
   @IsMobilePhone()
+  @IsOptional()
   @Length(6)
   @ApiProperty({ example: '0974856321' })
   readonly phone: string;
 
   @IsString()
-  @IsNotEmpty()
-  @ApiProperty({ example: 'Shevchenko' })
+  @IsOptional()
+  @ApiProperty({ example: 'Ivanenko' })
   readonly lastName: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @Length(3, 12)
-  @ApiProperty({ example: 'Taras' })
+  @ApiProperty({ example: 'Ivan' })
   readonly firstName: string;
 
   @IsString()
-  @IsNotEmpty()
-  @ApiProperty({ example: 'wolf' })
+  @IsOptional()
+  @ApiProperty({ example: 'vanya' })
   readonly nickName: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({ example: 'worker' })
   readonly description: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({ example: 'ceo' })
   readonly position: string;
 }
