@@ -20,36 +20,31 @@ export class AuthService {
     private usersService: UsersService,
   ) {}
 
-  async registration(userDto: CreateUserDto): Promise<string> {
+  async registration(userDto: CreateUserDto) {
     const { email, password } = userDto;
     const candidate = await this.usersService.getUserByEmail(email);
 
     if (candidate) {
       throw new HttpException(
-        `User with this email ${email} exist`,
-        HttpStatus.BAD_REQUEST,
-      );
+        `User with this email ${email} exist`, HttpStatus.BAD_REQUEST,);
     }
 
     const hashedPassword = await bcrypt.hash(password, 6);
     const user = await this.usersService.createUser({
-      ...userDto,
-      password: hashedPassword,
+      ...userDto, password: hashedPassword,
     });
 
-    return this.generateToken(user);
+    const token = await this.generateToken(user);
+
+    return {
+      ...user, token,
+    };
   }
 
-  async login(userDto: LoginUserDto): Promise<string> {
+  async login(userDto: LoginUserDto):Promise<string> {
     const user = await this.validateUser(userDto);
-    return this.generateToken(user);
-  }
+    return  await this.generateToken(user);
 
-  async logout() {}
-
-  private async generateToken(user: User) {
-    const payload = { user: user.email, id: user.id, role: user.role };
-    return this.jwtService.sign(payload);
   }
 
   private async validateUser(userDto: LoginUserDto): Promise<User> {
@@ -70,4 +65,12 @@ export class AuthService {
     }
     return user;
   }
+
+
+  private async generateToken(user: User):Promise<string> {
+    const payload = { user: user.email, id: user.id, role: user.role };
+    return this.jwtService.sign(payload);
+  }
+
+
 }

@@ -9,7 +9,7 @@ CREATE TABLE "User" (
     "nickName" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "position" TEXT NOT NULL,
-    "role" TEXT,
+    "role" TEXT DEFAULT E'user',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );

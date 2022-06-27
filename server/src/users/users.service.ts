@@ -14,7 +14,7 @@ export class UsersService {
     return this.prismaService.user.findFirst({ where: { email } });
   }
 
-  getUserById(id: string): Promise<User> {
-    return this.prismaService.user.findFirst({ where: {} });
+  getUserById(id: number): Promise<User> {
+    return this.prismaService.user.findFirst({ where: { id } });
   }
 }

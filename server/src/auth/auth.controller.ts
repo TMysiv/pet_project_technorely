@@ -1,5 +1,6 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {Body, Controller, Get, Post} from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { AuthService } from './auth.service';
@@ -27,7 +28,7 @@ export class AuthController {
       },
     },
   })
-  @Post('/registration')
+  @Post('/signup')
   registration(@Body() userDto: CreateUserDto) {
     return this.authService.registration(userDto);
   }
@@ -50,11 +51,15 @@ export class AuthController {
       },
     },
   })
-  @Post('/login')
+  @Post('/signin')
   login(@Body() userDto: LoginUserDto) {
     return this.authService.login(userDto);
   }
 
-  @Post('/logout')
-  logout() {}
+  @ApiOperation({ summary: 'Logout from system' })
+  @ApiOkResponse({ description: 'Logout Successfully',status:200 })
+  @Get('/logout')
+  logout() {
+    return 'Logout Successfully'
+  }
 }
