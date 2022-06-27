@@ -25,19 +25,13 @@ export class AuthService {
     const candidate = await this.usersService.getUserByEmail(email);
 
     if (candidate) {
-      throw new HttpException(
-        `User with this email ${email} exist`,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException(`User with this email ${email} exist`,HttpStatus.BAD_REQUEST);
     }
 
     const checkPhone = await this.usersService.getUserByPhone(phone);
 
     if (checkPhone) {
-      throw new HttpException(
-        `User with this phone ${phone} exist`,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new HttpException(`User with this phone ${phone} exist`,HttpStatus.BAD_REQUEST);
     }
 
     const hashedPassword = await bcrypt.hash(password, 6);
