@@ -10,38 +10,15 @@ import {
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtAuthGuards,RoleGuards } from '../auth/guards';
+import { JwtAuthGuards } from '../auth/guards';
 
 
 @ApiTags('Users')
 @UseGuards(JwtAuthGuards)
 @Controller('users')
 export class UsersController {
-  constructor(private userService: UsersService) {}
 
-  @UseGuards(RoleGuards)
-  @ApiOperation({ summary: 'Receive All Users' })
-  @ApiOkResponse({
-    status: 200,
-    schema: {
-      example: {
-        id: 1,
-        email: 'qwerty@gamil.com',
-        password: '12345678',
-        phone: '0978456159',
-        lastName: 'Shevchenko',
-        firstName: 'Taras',
-        nickName: 'wolf',
-        description: 'worker',
-        position: 'ceo',
-        role: 'user',
-      },
-    },
-  })
-  @Get()
-  getAllUsers() {
-    return this.userService.getAllUsers();
-  }
+  constructor(private userService: UsersService) {}
 
   @ApiOperation({ summary: 'Receive information about one User' })
   @ApiOkResponse({
@@ -95,10 +72,4 @@ export class UsersController {
     return this.userService.deleteUser(id);
   }
 
-  @ApiOperation({ summary: 'Update Role,only by Admin' })
-  @UseGuards(RoleGuards)
-  @Get('/role/:userId')
-  addRole(@Param('userId') userId: string) {
-    return this.userService.addRole(Number(userId));
-  }
 }

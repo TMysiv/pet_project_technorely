@@ -24,7 +24,6 @@ export class CompaniesService {
       );
     }
     Object.assign(companyDto, { userId });
-    console.log(companyDto);
     return this.prismaService.company.create({ data: companyDto });
   }
 

@@ -5,11 +5,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(private prismaService: PrismaService) {}
 
-  async getAllUsers(): Promise<User[]> {
-    return this.prismaService.user.findMany();
-  }
+  constructor(private prismaService: PrismaService) {}
 
   async getUserByEmail(email: string): Promise<User> {
     return this.prismaService.user.findFirst({ where: { email } });
@@ -45,10 +42,4 @@ export class UsersService {
     return 'User successfully deleted';
   }
 
-  async addRole(userId: number) {
-    return this.prismaService.user.update({
-      where: { id: userId },
-      data: { role: 'admin' },
-    });
-  }
 }
