@@ -5,8 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaService } from '../core/prisma.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
+import { CreateUserDto, LoginUserDto } from './dto';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcryptjs';
@@ -25,13 +24,19 @@ export class AuthService {
     const candidate = await this.usersService.getUserByEmail(email);
 
     if (candidate) {
-      throw new HttpException(`User with this email ${email} exist`,HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        `User with this email ${email} exist`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const checkPhone = await this.usersService.getUserByPhone(phone);
 
     if (checkPhone) {
-      throw new HttpException(`User with this phone ${phone} exist`,HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        `User with this phone ${phone} exist`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const hashedPassword = await bcrypt.hash(password, 6);
@@ -40,11 +45,8 @@ export class AuthService {
       password: hashedPassword,
     });
 
-    const token = await this.generateToken(user);
-
     return {
       ...user,
-      token,
     };
   }
 

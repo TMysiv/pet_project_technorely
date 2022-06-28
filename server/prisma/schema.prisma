@@ -17,7 +17,7 @@ model User {
   nickName  String
   description String
   position String
-  role String? @default("user")
+  role Role @default(user)
   companies Company[]
  }
 
@@ -31,5 +31,10 @@ model Company {
   type String
   users    User?    @relation(fields: [userId], references: [id])
   userId  Int?
+}
+
+enum Role {
+user
+admin
 }
 

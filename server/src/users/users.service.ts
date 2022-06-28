@@ -31,7 +31,6 @@ export class UsersService {
     return this.prismaService.user.update({
       where: { id: Number(id) },
       data: {
-        phone: user.phone,
         lastName: user.lastName,
         firstName: user.firstName,
         nickName: user.nickName,
@@ -44,5 +43,12 @@ export class UsersService {
   async deleteUser(userId: string): Promise<string> {
     await this.prismaService.user.delete({ where: { id: Number(userId) } });
     return 'User successfully deleted';
+  }
+
+  async addRole(userId: number) {
+    return this.prismaService.user.update({
+      where: { id: userId },
+      data: { role: 'admin' },
+    });
   }
 }

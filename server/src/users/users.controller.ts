@@ -1,13 +1,25 @@
-import { Body, Controller, Delete, Get, Param, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { JwtAuthGuards,RoleGuards } from '../auth/guards';
+
 
 @ApiTags('Users')
+@UseGuards(JwtAuthGuards)
 @Controller('users')
 export class UsersController {
   constructor(private userService: UsersService) {}
 
+  @UseGuards(RoleGuards)
   @ApiOperation({ summary: 'Receive All Users' })
   @ApiOkResponse({
     status: 200,
@@ -81,5 +93,12 @@ export class UsersController {
   @Delete('/:id')
   deleteUser(@Param('id') id: string) {
     return this.userService.deleteUser(id);
+  }
+
+  @ApiOperation({ summary: 'Update Role,only by Admin' })
+  @UseGuards(RoleGuards)
+  @Get('/role/:userId')
+  addRole(@Param('userId') userId: string) {
+    return this.userService.addRole(Number(userId));
   }
 }
