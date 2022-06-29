@@ -12,12 +12,10 @@ import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuards } from '../auth/guards';
 
-
 @ApiTags('Users')
 @UseGuards(JwtAuthGuards)
 @Controller('users')
 export class UsersController {
-
   constructor(private userService: UsersService) {}
 
   @ApiOperation({ summary: 'Receive information about one User' })
@@ -71,5 +69,4 @@ export class UsersController {
   deleteUser(@Param('id') id: string) {
     return this.userService.deleteUser(id);
   }
-
 }

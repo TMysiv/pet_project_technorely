@@ -1,6 +1,5 @@
 import {
-  HttpException,
-  HttpStatus,
+  BadRequestException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -9,7 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcryptjs';
 import { User } from '@prisma/client';
-import {PrismaService} from "../core/prisma.service";
+import { PrismaService } from '../core/prisma.service';
 
 @Injectable()
 export class AuthService {
@@ -24,19 +23,13 @@ export class AuthService {
     const candidate = await this.usersService.getUserByEmail(email);
 
     if (candidate) {
-      throw new HttpException(
-        `User with this email ${email} exist`,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException([`User with this ${email} exist`] );
     }
 
     const checkPhone = await this.usersService.getUserByPhone(phone);
 
     if (checkPhone) {
-      throw new HttpException(
-        `User with this phone ${phone} exist`,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException([`User with this phone ${phone} exist`] );
     }
 
     const hashedPassword = await bcrypt.hash(password, 6);
@@ -53,13 +46,12 @@ export class AuthService {
   async login(userDto: LoginUserDto): Promise<string> {
     const user = await this.validateUser(userDto);
     const token = await this.generateToken(user);
-    return  this.saveToken(user.id,token)
-
+    return this.saveToken(user.id, token);
   }
 
-  async logout(token:string):Promise<string>{
+  async logout(token: string): Promise<string> {
     await this.removeToken(token);
-    return 'Logout Successfully'
+    return 'Logout Successfully';
   }
 
   private async validateUser(userDto: LoginUserDto): Promise<User> {
@@ -86,25 +78,34 @@ export class AuthService {
     return this.jwtService.sign(payload);
   }
 
-  private async saveToken(userId:number,token):Promise<string>{
-      const tokenFromDB = await this.prismaService.token.findFirst({where:{userId}});
+  private async saveToken(userId: number, token): Promise<string> {
+    const tokenFromDB = await this.prismaService.token.findFirst({
+      where: { userId },
+    });
 
-      if (tokenFromDB){
-       tokenFromDB.token = token
-        await this.prismaService.token.update({where:{id:tokenFromDB.id},data:{token:tokenFromDB.token}})
-        return tokenFromDB.token
-      }
+    if (tokenFromDB) {
+      tokenFromDB.token = token;
+      await this.prismaService.token.update({
+        where: { id: tokenFromDB.id },
+        data: { token: tokenFromDB.token },
+      });
+      return tokenFromDB.token;
+    }
 
-      const newToken = await this.prismaService.token.create({data:{userId,token}})
-      return newToken.token
+    const newToken = await this.prismaService.token.create({
+      data: { userId, token },
+    });
+    return newToken.token;
   }
 
-  private async removeToken(token:string){
+  private async removeToken(token: string) {
     try {
-      const userFromDb = await this.prismaService.token.findFirst({where:{token}});
-      await this.prismaService.token.delete({where:{id:userFromDb.id}})
-    }catch (e) {
-      throw new UnauthorizedException('user not auth')
+      const userFromDb = await this.prismaService.token.findFirst({
+        where: { token },
+      });
+      await this.prismaService.token.delete({ where: { id: userFromDb.id } });
+    } catch (e) {
+      throw new UnauthorizedException('user not auth');
     }
   }
 }

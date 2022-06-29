@@ -1,0 +1,53 @@
+.wrap{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.wrap_form{
+    margin-top: 50px;
+    border: 2px solid grey;
+    width: 40%;
+    background: #faf8f8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.wrap_form span{
+    color: red;
+}
+
+.form_header{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    align-items: center;
+}
+.form_header h5{
+    margin-top: 20px;
+    margin-right: 240px;
+}
+
+.form_registration input{
+    width: 200px;
+    height: 20px;
+    margin-top: 10px;
+    margin-left: 30px;
+}
+.form_registration{
+    display: flex;
+    flex-direction: column;
+    align-items: self-end;
+    margin-bottom: 20px;
+
+}
+.form_registration button {
+    margin-top: 20px;
+    width: 150px;
+}
+
+.wrap_form a {
+    color: blue;
+    text-decoration: none;
+}

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import {Module} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
@@ -16,6 +16,6 @@ import { AdminModule } from './admin/admin.module';
     AdminModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [  ],
 })
 export class AppModule {}

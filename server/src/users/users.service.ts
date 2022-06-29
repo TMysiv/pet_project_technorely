@@ -5,7 +5,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-
   constructor(private prismaService: PrismaService) {}
 
   async getUserByEmail(email: string): Promise<User> {
@@ -41,5 +40,4 @@ export class UsersService {
     await this.prismaService.user.delete({ where: { id: Number(userId) } });
     return 'User successfully deleted';
   }
-
 }
