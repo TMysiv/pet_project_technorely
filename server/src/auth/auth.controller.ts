@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {Body, Controller, Get, Post, Req} from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { CreateUserDto, LoginUserDto } from './dto';
@@ -58,7 +58,8 @@ export class AuthController {
   @ApiOperation({ summary: 'Logout from system' })
   @ApiOkResponse({ description: 'Logout Successfully', status: 200 })
   @Get('/logout')
-  logout() {
-    return 'Logout Successfully';
+  logout(@Req() request) {
+    const token = request.headers.authorization.split(' ')[1];
+    return this.authService.logout(token);
   }
 }

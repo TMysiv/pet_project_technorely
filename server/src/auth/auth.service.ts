@@ -4,12 +4,12 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { PrismaService } from '../core/prisma.service';
 import { CreateUserDto, LoginUserDto } from './dto';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcryptjs';
 import { User } from '@prisma/client';
+import {PrismaService} from "../core/prisma.service";
 
 @Injectable()
 export class AuthService {
@@ -52,7 +52,14 @@ export class AuthService {
 
   async login(userDto: LoginUserDto): Promise<string> {
     const user = await this.validateUser(userDto);
-    return await this.generateToken(user);
+    const token = await this.generateToken(user);
+    return  this.saveToken(user.id,token)
+
+  }
+
+  async logout(token:string):Promise<string>{
+    await this.removeToken(token);
+    return 'Logout Successfully'
   }
 
   private async validateUser(userDto: LoginUserDto): Promise<User> {
@@ -75,7 +82,29 @@ export class AuthService {
   }
 
   private async generateToken(user: User): Promise<string> {
-    const payload = { user: user.email, id: user.id, role: user.role };
+    const payload = { user: user.email, userId: user.id, role: user.role };
     return this.jwtService.sign(payload);
+  }
+
+  private async saveToken(userId:number,token):Promise<string>{
+      const tokenFromDB = await this.prismaService.token.findFirst({where:{userId}});
+
+      if (tokenFromDB){
+       tokenFromDB.token = token
+        await this.prismaService.token.update({where:{id:tokenFromDB.id},data:{token:tokenFromDB.token}})
+        return tokenFromDB.token
+      }
+
+      const newToken = await this.prismaService.token.create({data:{userId,token}})
+      return newToken.token
+  }
+
+  private async removeToken(token:string){
+    try {
+      const userFromDb = await this.prismaService.token.findFirst({where:{token}});
+      await this.prismaService.token.delete({where:{id:userFromDb.id}})
+    }catch (e) {
+      throw new UnauthorizedException('user not auth')
+    }
   }
 }

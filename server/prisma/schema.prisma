@@ -19,6 +19,7 @@ model User {
   position String
   role Role @default(user)
   companies Company[]
+  tokens Token[]
  }
 
 model Company {
@@ -29,6 +30,13 @@ model Company {
   numberOfEmployees Int
   description String
   type String
+  users    User?    @relation(fields: [userId], references: [id])
+  userId  Int?
+}
+
+model Token {
+  id        Int      @default(autoincrement()) @id
+  token     String
   users    User?    @relation(fields: [userId], references: [id])
   userId  Int?
 }
