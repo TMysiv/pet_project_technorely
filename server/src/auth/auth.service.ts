@@ -60,15 +60,13 @@ export class AuthService {
     const user = await this.usersService.getUserByEmail(email);
 
     if (!user) {
-      throw new UnauthorizedException({ message: 'Wrong email or password' });
+      throw new BadRequestException([`Wrong email or password`] );
     }
 
     const passwordEquals = await bcrypt.compare(password, user.password);
 
     if (!passwordEquals) {
-      throw new UnauthorizedException({
-        message: 'Wrong email or password password',
-      });
+      throw new BadRequestException([`Wrong email or password`] );
     }
     return user;
   }

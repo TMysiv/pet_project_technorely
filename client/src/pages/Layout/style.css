@@ -1,0 +1,24 @@
+.container_layout{
+    margin: 20px auto;
+    background-color: white;
+    max-width: 60%;
+    height: 600px;
+    /*border: 3px solid black;*/
+}
+.container_layout_header{
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid black;
+    padding: 10px;
+}
+.header_menu{
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+}
+.header_menu_link{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+}
