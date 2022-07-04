@@ -1,0 +1,13 @@
+.user{
+    padding: 30px;
+    width: 40%;
+    height: 100%;
+}
+.user li{
+    font-size: 18px;
+    padding-bottom: 15px;
+}
+.user button {
+    margin-top: 20px;
+    width: 100px;
+}

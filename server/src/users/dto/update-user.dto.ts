@@ -1,30 +1,30 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString, Length } from 'class-validator';
+import {IsNotEmpty, IsString, Length} from 'class-validator';
 
 export class UpdateUserDto {
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   @ApiProperty({ example: 'Ivanenko' })
   readonly lastName: string;
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   @Length(3, 12)
   @ApiProperty({ example: 'Ivan' })
   readonly firstName: string;
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   @ApiProperty({ example: 'vanya' })
   readonly nickName: string;
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   @ApiProperty({ example: 'worker' })
   readonly description: string;
 
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   @ApiProperty({ example: 'ceo' })
   readonly position: string;
 }

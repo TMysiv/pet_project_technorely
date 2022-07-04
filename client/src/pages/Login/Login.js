@@ -5,12 +5,14 @@ import {useNavigate} from "react-router";
 
 import css from './style.css';
 import {authService} from "../../services/auth.service";
+import {useDispatch} from "react-redux";
 
 const Login = () => {
 
     const [formError, setFormError] = useState([]);
     const {register, handleSubmit, reset} = useForm();
     const navigate = useNavigate()
+    const dispatch = useDispatch();
 
     const login = async (data) => {
         try {
