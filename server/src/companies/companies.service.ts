@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {BadRequestException, HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import { Company } from '@prisma/client';
 import { PrismaService } from '../core/prisma.service';
 import { CreateCompanyDto, UpdateCompanyDto } from './dto';
@@ -18,10 +18,8 @@ export class CompaniesService {
     });
 
     if (checkCompany) {
-      throw new HttpException(
-        `Company with this name ${name} exist`,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new BadRequestException(
+        [`Company with this name ${name} exist`]);
     }
     Object.assign(companyDto, { userId });
     return this.prismaService.company.create({ data: companyDto });

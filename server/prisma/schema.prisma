@@ -27,7 +27,7 @@ model Company {
   name     String   @unique
   address String
   serviceOfActivity   String
-  numberOfEmployees Int
+  numberOfEmployees String
   description String
   type String
   users    User?    @relation(fields: [userId], references: [id])

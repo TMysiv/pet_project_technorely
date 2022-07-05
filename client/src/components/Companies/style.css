@@ -1,6 +1,5 @@
 .table {
-  padding: 50px;
-    overflow-y: scroll;
+   margin: 20px auto;
 }
 
 #title {
@@ -32,4 +31,18 @@
     text-align: center;
     background-color: #4CAF50;
     color: white;
+}
+.createCompany {
+    background-color: #656c65;
+    color: white;
+    padding: 10px 15px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 20%;
+    opacity: 0.9;
+}
+
+.createCompany:hover {
+    opacity: 1;
 }

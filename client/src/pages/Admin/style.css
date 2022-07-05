@@ -1,37 +1,37 @@
-.container_layout{
+.container_admin{
     margin: 20px auto;
     max-width: 50%;
     height: 500px;
     box-sizing: border-box;
     background: #fffefe;
 }
-.container_layout_header{
+.container_admin_header{
     display: flex;
     height: 10%;
     width: 100%;
     background: cadetblue;
     align-items: center;
 }
-.container_layout_header a {
+.container_admin_header a {
     color: white;
     text-decoration: none;
 }
 
-.header_link{
+.header{
     width: 45%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.container_layout_header button{
+.container_admin_header button{
     width: 5%;
     height: 50%;
     color: white;
     background: cadetblue;
 }
 
-.container_layout_outlet{
+.container_admin_outlet{
     height: 90%;
     display: flex;
     overflow-y: scroll;

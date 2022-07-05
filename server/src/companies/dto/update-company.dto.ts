@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import {  IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdateCompanyDto {
@@ -12,10 +12,10 @@ export class UpdateCompanyDto {
   @ApiProperty({ example: 'restaurant' })
   readonly serviceOfActivity: string;
 
-  @IsNumber()
+  @IsString()
   @IsOptional()
   @ApiProperty({ example: '500' })
-  readonly numberOfEmployees: number;
+  readonly numberOfEmployees: string;
 
   @IsString()
   @IsOptional()

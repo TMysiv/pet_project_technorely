@@ -1,44 +1,51 @@
 import React, {useEffect, useState} from 'react';
 import jwt_decode from "jwt-decode";
-import {companyService} from "../../services/company.service";
+import {useNavigate} from "react-router";
 
+import {companyService} from "../../services/company.service";
 import css from './style.css'
 
 const Companies = () => {
 
     const [companies, setCompanies] = useState([]);
+    const navigate = useNavigate();
 
     const token = localStorage.getItem('token');
     const {userId} = jwt_decode(token);
 
     useEffect(() => {
         companyService.getAll(userId).then(value => setCompanies(value))
-    }, [])
+    }, [setCompanies])
+
 
     const renderTableData = () => {
         return companies.map((company) => {
-            const {id, name, address, numberOfEmployees, type} = company;
+            const {id, name, address,serviceOfActivity, numberOfEmployees, type} = company;
             return (
                 <tr key={id}>
                     <td>{id}</td>
+
                     <td>{name}</td>
                     <td>{address}</td>
+                    <td>{serviceOfActivity}</td>
 
                     <td>{numberOfEmployees}</td>
 
                     <td>{type}</td>
-                    <button>update</button>
-                    <button>delete</button>
                 </tr>
             )
         })
     }
 
     const renderTableHeader = () => {
-        const header = ['id', 'name', 'address', 'numberOfEmployees', 'type', 'buttons'];
+        const header = ['id','name', 'address','service Of Activity', 'number Of Employees', 'type'];
         return header.map(key => {
             return <th key={new Date().getDate()}>{key.toUpperCase()}</th>
         })
+    }
+
+    const crateCompany = () =>{
+        navigate('/createCompany');
     }
 
 
@@ -53,6 +60,7 @@ const Companies = () => {
                 {renderTableData()}
                 </tbody>
             </table>
+            <button onClick={crateCompany} type="submit" className="createCompany">Create Company</button>
 
 
         </div>

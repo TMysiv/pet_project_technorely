@@ -10,7 +10,7 @@ const Registration = () => {
     const [formError, setFormError] = useState([]);
     const navigate = useNavigate();
 
-    const {register, handleSubmit, reset} = useForm();
+    const {register, handleSubmit} = useForm();
 
     const createUser = async (data) => {
 

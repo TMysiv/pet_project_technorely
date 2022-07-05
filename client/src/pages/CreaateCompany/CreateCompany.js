@@ -12,7 +12,7 @@ const CreateCompany = () => {
     const [formError, setFormError] = useState([]);
     const navigate = useNavigate();
 
-    const {register, handleSubmit, reset} = useForm();
+    const {register, handleSubmit} = useForm();
 
     const token = localStorage.getItem('token');
     const {userId} = jwt_decode(token);
@@ -25,6 +25,7 @@ const CreateCompany = () => {
             navigate('/companies');
 
         } catch (error) {
+            console.log(error)
             setFormError(error.response.data.message)
         }
     }
@@ -36,26 +37,23 @@ const CreateCompany = () => {
                     <hr/>
 
                     <label><b>Name</b></label>
-                    <input type="text" placeholder="Enter Email" {...register('name')} required/>
+                    <input type="text" placeholder="Enter Name" {...register('name')} required/>
 
                     <label><b>Address</b></label>
-                    <input type="text" placeholder="Enter Password" {...register('address')} required />
+                    <input type="text" placeholder="Enter Address" {...register('address')} required />
 
                     <label><b>Service Of Activity</b></label>
-                    <input type="text" placeholder="Enter Phone" {...register('serviceOfActivity')} required/>
-
-                    <label><b>Last name</b></label>
-                    <input type="text" placeholder="Enter Last name" {...register('lastName')} required />
+                    <input type="text" placeholder="Enter Service Of Activity" {...register('serviceOfActivity')} required/>
 
                     <label><b>Number Of Employees</b></label>
-                    <input type="number" placeholder="Enter First name" {...register('numberOfEmployees')} required />
+                    <input type="number" placeholder="Enter Number Of Employees" {...register('numberOfEmployees')} required />
 
                     <label><b>Description</b></label>
-                    <input type="text" placeholder="Enter Nick name" {...register('description')} required />
+                    <input type="text" placeholder="Enter Description" {...register('description')} required />
 
 
                     <label><b>Type</b></label>
-                    <input type="text" placeholder="Enter Position" {...register('type')} required />
+                    <input type="text" placeholder="Enter Type" {...register('type')} required />
 
                     <hr/>
 
