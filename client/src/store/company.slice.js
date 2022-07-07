@@ -18,7 +18,11 @@ const companySlice = createSlice({
         companies: [],
         error: null
     },
-    reducers: {},
+    reducers: {
+        deleteCompany: (state,action) =>{
+             state.companies = state.companies.filter(company => company.id !== action.payload.companyId);
+        }
+    },
     extraReducers: {
         [getCompaniesById.fulfilled]: (state, action) => {
             state.companies = action.payload
@@ -31,3 +35,4 @@ const companySlice = createSlice({
 
 const companyReducer = companySlice.reducer;
 export default companyReducer;
+export const {deleteCompany} = companySlice.actions

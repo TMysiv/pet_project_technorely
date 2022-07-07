@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react';
 import {useNavigate} from "react-router";
 import jwt_decode from 'jwt-decode';
-
-import css from './style.css'
-import {Table, TableCell, TableContainer, TableHead, TableRow, TableBody, Paper,Button,Box} from "@mui/material";
+import {Table, TableCell, TableContainer, TableHead, TableRow, TableBody, Paper, Button, Box} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
+
 import {getCompaniesById} from "../../store/company.slice";
+import {companyService} from "../../services/company.service";
+import {deleteCompany} from '../../store/company.slice'
 
 const Companies = () => {
 
@@ -17,9 +18,23 @@ const Companies = () => {
 
     const navigate = useNavigate();
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(getCompaniesById({userId}))
-    },[])
+    }, []);
+
+    const removeCompany = async (companyId) => {
+        try {
+            await companyService.deleteCompany(userId, companyId);
+            dispatch(deleteCompany({companyId}))
+        } catch (e) {
+            console.log(e)
+        }
+
+    }
+
+    const createCompany = () =>{
+        navigate('/createCompany')
+    }
 
     return (
         <>
@@ -48,10 +63,15 @@ const Companies = () => {
                                 <TableCell align="right">{company.numberOfEmployees}</TableCell>
                                 <TableCell align="right">{company.description}</TableCell>
                                 <Box><Button color="success">Update</Button></Box>
-                                <Box><Button color="error" >Delete</Button></Box>
+                                <Box><Button color="error" onClick={() => {
+                                    removeCompany(company.id)
+                                }}>Delete</Button></Box>
                             </TableRow>
 
                         ))}
+                        <Box margin={2}>
+                            <Button variant="contained" onClick={createCompany}>Create</Button>
+                        </Box>
                     </TableBody>
                 </Table>
             </TableContainer>
