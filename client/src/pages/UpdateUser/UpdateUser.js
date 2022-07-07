@@ -1,25 +1,27 @@
 import React, {useState} from 'react';
 import {useNavigate} from "react-router";
 import {useForm} from "react-hook-form";
-import jwt_decode from "jwt-decode";
+import {useDispatch, useSelector} from "react-redux";
 
-import {userService} from "../../services/user.service";
+import {updateUserById} from "../../store/user.slice";
 import css from './style.css';
 
 const UpdateUser = () => {
 
+    const {user} = useSelector(state => state['userReducer']);
+    const userId = user.id;
+
+    const dispatch = useDispatch()
+
     const [formError,setFormError] = useState();
     const navigate = useNavigate();
 
-    const {register, handleSubmit, reset} = useForm();
+    const {register, handleSubmit} = useForm();
 
-    const token = localStorage.getItem('token');
-    const {userId} = jwt_decode(token);
-
-    const updateUser = async (data) => {
+    const updateUser =  (data) => {
 
         try {
-            await userService.updateUserById(userId,data);
+            dispatch(updateUserById({userId,data}))
 
             navigate('/');
 

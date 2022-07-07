@@ -54,3 +54,6 @@ a {
 .container_registration li{
     color: red;
 }
+.errors{
+    color: red;
+}
