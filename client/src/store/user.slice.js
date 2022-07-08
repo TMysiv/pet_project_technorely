@@ -14,9 +14,9 @@ export const getUserById = createAsyncThunk(
 
 export const updateUserById = createAsyncThunk(
     'userSlice/getUserById',
-    async ({userId,data}, {rejectWithValue}) => {
+    async ({id,data}, {rejectWithValue}) => {
         try {
-            return userService.updateUserById(userId,data);
+            return userService.updateUserById(id,data);
         } catch (e) {
             return rejectWithValue(e.message);
         }

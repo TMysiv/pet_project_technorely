@@ -12,6 +12,17 @@ export const getCompaniesById = createAsyncThunk(
     }
 );
 
+export const createCompany = createAsyncThunk(
+    'companySlice/createCompany',
+    async ({userId,data}, {rejectWithValue}) => {
+        try {
+            return companyService.createCompany(userId,data);
+        } catch (e) {
+            return rejectWithValue(e.message);
+        }
+    }
+);
+
 const companySlice = createSlice({
     name: 'companySlice',
     initialState: {
@@ -28,6 +39,12 @@ const companySlice = createSlice({
             state.companies = action.payload
         },
         [getCompaniesById.rejected]: (state, action) => {
+            state.error = action.payload
+        },
+        [createCompany.fulfilled]: (state, action) => {
+            state.companies = state.companies.push(action.payload)
+        },
+        [createCompany.rejected]: (state, action) => {
             state.error = action.payload
         }
     }

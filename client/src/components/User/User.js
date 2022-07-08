@@ -13,20 +13,32 @@ import {
     DialogContent, TextField, DialogActions
 } from "@mui/material";
 import {useDispatch} from "react-redux";
+import {deleteUser, updateUserById} from "../../store/user.slice";
+import {useForm} from "react-hook-form";
 
 import {userService} from "../../services/user.service";
-import {deleteUser} from "../../store/user.slice";
 
 const User = ({user}) => {
     const {id} = user;
 
-    const [open,setOpen] = useState(false);
+    const [open, setOpen] = useState(false);
+    const [formError,setFormError] = useState([]);
+
+    const {register, handleSubmit,reset, formState: {errors}} = useForm();
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const updateUser = () => {
-        navigate('update')
+    const updateUser = async (data) => {
+
+        try {
+            setOpen(false);
+            dispatch(updateUserById({id,data}))
+            reset()
+
+        } catch (error) {
+            setFormError(error.response.data.message)
+        }
     }
 
     const removeUser = async () => {
@@ -42,10 +54,6 @@ const User = ({user}) => {
         setOpen(false)
     }
 
-    const update = (data) => {
-        setOpen(false);
-        console.log(data)
-    }
 
     return (
 
@@ -111,30 +119,67 @@ const User = ({user}) => {
                 </Box>
             </Box>
 
-            <Dialog open={open} onClose={handleClose}  aria-labelledby="from-dialog-title">
-                    <DialogTitle id="from-dialog-title">Update User</DialogTitle>
+            <Dialog open={open} onClose={handleClose} aria-labelledby="from-dialog-title">
+                <DialogTitle id="from-dialog-title">Update User</DialogTitle>
+
+                <form onSubmit={handleSubmit(updateUser)}>
                     <DialogContent>
                         <TextField
                             autoFocus
                             margin="dense"
-                            id="name"
-                            label="email"
-                            type="email"
+                            label="firstName"
                             fullWidth
+                            {...register('firstName', {required: "Required field"})}
+                            error={!!errors?.firstName}
+                            helperText={errors?.firstName ? errors.firstName.message : null}
                         />
                         <TextField
                             autoFocus
                             margin="dense"
-                            id="pass"
-                            label="pass"
-                            type="password"
+                            label="lastName"
                             fullWidth
+                            {...register('lastName', {required: "Required field"})}
+                            error={!!errors?.lastName}
+                            helperText={errors?.lastName ? errors.lastName.message : null}
                         />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            label="nickName"
+                            fullWidth
+                            {...register('nickName', {required: "Required field"})}
+                            error={!!errors?.nickName}
+                            helperText={errors?.nickName ? errors.nickName.message : null}
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            label="description"
+                            fullWidth
+                            {...register('description', {required: "Required field"})}
+                            error={!!errors?.description}
+                            helperText={errors?.description ? errors.description.message : null}
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            label="position"
+                            fullWidth
+                            {...register('position', {required: "Required field"})}
+                            error={!!errors?.position}
+                            helperText={errors?.position ? errors.position.message : null}
+                        />
+
                     </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Cansel</Button>
-                    <Button onClick={update}>Update</Button>
-                </DialogActions>
+
+
+                    <DialogActions>
+                        <Button onClick={handleClose} color="error">Cansel</Button>
+                        <Button type="submit" color="success">Update</Button>
+                    </DialogActions>
+
+                    {formError && formError.map(err =><li key={new Date().getDate()}>{err}</li>)}
+                </form>
 
             </Dialog>
         </Paper>

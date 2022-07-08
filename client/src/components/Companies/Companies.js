@@ -1,14 +1,31 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigate} from "react-router";
 import jwt_decode from 'jwt-decode';
-import {Table, TableCell, TableContainer, TableHead, TableRow, TableBody, Paper, Button, Box} from "@mui/material";
+import {
+    Table,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TableBody,
+    Paper,
+    Button,
+    Box,
+    DialogTitle, DialogContent, TextField, DialogActions, Dialog
+} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 
-import {getCompaniesById} from "../../store/company.slice";
+import {createCompany, getCompaniesById} from "../../store/company.slice";
 import {companyService} from "../../services/company.service";
 import {deleteCompany} from '../../store/company.slice'
+import {useForm} from "react-hook-form";
 
 const Companies = () => {
+
+    const [open,setOpen] = useState(false);
+    const [formError,setFormError] = useState([]);
+
+    const {reset,register,handleSubmit,formState:{errors}} = useForm();
 
     const token = localStorage.getItem('token');
     const {userId} = jwt_decode(token);
@@ -29,11 +46,23 @@ const Companies = () => {
         } catch (e) {
             console.log(e)
         }
-
     }
 
-    const createCompany = () =>{
-        navigate('/createCompany')
+    const handleOpen = () => {
+        setOpen(true)
+    }
+    const handleClose = () => {
+        setOpen(false)
+    }
+
+    const newCompany = (data) =>{
+        try{
+            setOpen(false)
+            dispatch(createCompany({userId,data}))
+            reset()
+        }catch (error) {
+            setFormError(error.response.data.message)
+        }
     }
 
     return (
@@ -72,11 +101,85 @@ const Companies = () => {
 
                         ))}
                         <Box margin={2}>
-                            <Button variant="contained" onClick={createCompany}>Create</Button>
+                            <Button variant="contained" onClick={handleOpen}>Create</Button>
                         </Box>
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            <Dialog open={open} onClose={handleClose} aria-labelledby="from-dialog-title">
+                <DialogTitle id="from-dialog-title">Create Company</DialogTitle>
+
+                <form onSubmit={handleSubmit(newCompany)}>
+                    <DialogContent>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            label="name"
+                            fullWidth
+                            {...register('name', {required: "Required field"})}
+                            error={!!errors?.name}
+                            helperText={errors?.name ? errors.name.message : null}
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            label="address"
+                            fullWidth
+                            {...register('address', {required: "Required field"})}
+                            error={!!errors?.address}
+                            helperText={errors?.address ? errors.address.message : null}
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            label="serviceOfActivity"
+                            fullWidth
+                            {...register('serviceOfActivity', {required: "Required field"})}
+                            error={!!errors?.serviceOfActivity}
+                            helperText={errors?.serviceOfActivity ? errors.serviceOfActivity.message : null}
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            label="numberOfEmployees"
+                            fullWidth
+                            {...register('numberOfEmployees', {required: "Required field"})}
+                            error={!!errors?.numberOfEmployees}
+                            helperText={errors?.numberOfEmployees ? errors.numberOfEmployees.message : null}
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            label="description"
+                            fullWidth
+                            {...register('description', {required: "Required field"})}
+                            error={!!errors?.description}
+                            helperText={errors?.description ? errors.description.message : null}
+                        />
+
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            label="type"
+                            fullWidth
+                            {...register('type', {required: "Required field"})}
+                            error={!!errors?.type}
+                            helperText={errors?.type ? errors.type.message : null}
+                        />
+
+                    </DialogContent>
+
+
+                    <DialogActions>
+                        <Button onClick={handleClose} color="error">Cansel</Button>
+                        <Button type="submit" color="success">Create</Button>
+                    </DialogActions>
+
+                    {formError && formError.map(err =><li key={new Date().getDate()}>{err}</li>)}
+                </form>
+
+            </Dialog>
 
         </>
     );
