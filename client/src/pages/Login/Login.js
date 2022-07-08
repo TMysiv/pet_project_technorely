@@ -2,54 +2,79 @@ import React, {useState} from 'react';
 import {Link} from 'react-router-dom'
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router";
+import {Box, Button, Container, TextField, Typography} from "@mui/material";
 
-import css from './style.css';
 import {authService} from "../../services/auth.service";
-import {useDispatch} from "react-redux";
+import css from './style.css';
 
 const Login = () => {
 
     const [formError, setFormError] = useState([]);
-    const {register, handleSubmit, reset} = useForm();
+    const {register, handleSubmit, formState:{errors}} = useForm();
     const navigate = useNavigate()
-    const dispatch = useDispatch();
 
     const login = async (data) => {
+
         try {
             const token = await authService.login(data);
 
             localStorage.setItem('token', token.toString());
 
             navigate('/')
+
         } catch (error) {
             setFormError(error.response.data.message);
         }
     }
 
     return (
-        <>
+
+        <Container maxWidth={"xs"}>
+            <h1 align="center">Login</h1>
             <form onSubmit={handleSubmit(login)}>
-                <div className="container_login">
-                    <h1>Login</h1>
-                    <hr/>
 
-                    <label><b>Email</b></label>
-                    <input type="text" placeholder="Enter Email" {...register('email')} required/>
+                <Box mb={2} mt={2}>
+                    <TextField
+                        variant="outlined"
+                        label="email"
+                        fullWidth
+                        autoComplete="email"
+                        autoFocus
+                        {...register('email',{required:"Required field", pattern:{
+                            value:/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                                message:'email must be email'
+                            }})}
+                        error={!!errors?.email}
+                        helperText={errors?.email ? errors.email.message : null}
+                    />
+                </Box>
 
-                    <label><b>Password</b></label>
-                    <input type="password" placeholder="Enter Password" {...register('password')} required/>
+                <Box mb={2} mt={2}>
+                    <TextField
+                        variant="outlined"
+                        label="password"
+                        fullWidth
+                        autoComplete="password"
+                        autoFocus
+                        {...register('password',{required:"Required field",
+                        minLength:4,maxLength:10})}
+                        error={!!errors?.password}
+                        helperText={errors?.password ? errors.password.message : null}
 
-                    <hr/>
+                    />
+                </Box>
 
-                    <button type="submit" className="loginbtn">Login</button>
-                    {formError && formError.map(err => <li key={new Date().getDate()}>{err}</li>)}
-                </div>
-
-                <div className="container_login signup">
-                    <p>You don't have an account yet? <Link to={'/signup'}>Sign up</Link></p>
-                </div>
+                <Button type="submit" variant="contained" color="success" fullWidth>Log In</Button>
             </form>
-        </>
+            {formError && formError.map(err => <li key={new Date().getDate()}>{err}</li>)}
+            <Box mt={2} textAlign="center">
+                <Typography>
+                    You don't have an account yet? <Link to={'/signup'}>Sign Up</Link>
+                </Typography>
+            </Box>
+        </Container>
+
+
     );
 };
 

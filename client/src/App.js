@@ -26,7 +26,7 @@ function App() {
                     <Route path={'/companies'} element={<RequireAuth><Companies/></RequireAuth>}/>
                 </Route>
                 <Route path={'admin'} element={<AdminAuth><Admin/></AdminAuth>}>
-                    <Route path={'users'} element={<UsersAll/>}/>
+                    <Route index element={<UsersAll/>}/>
                     <Route path={'companies'} element={<CompaniesAll/>}/>
                 </Route>
             </Routes>

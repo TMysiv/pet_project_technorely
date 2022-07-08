@@ -1,43 +1,48 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import {Outlet} from "react-router";
+import {Outlet, useNavigate} from "react-router";
+import {AppBar, Button, Toolbar, Typography} from "@mui/material";
+import {Logout} from "@mui/icons-material";
+
 import {authService} from "../../services/auth.service";
 import css from './style.css';
 
 const Admin = () => {
 
+const navigate = useNavigate();
 
     const logout = async () => {
         try {
             await authService.logout();
             localStorage.removeItem('token')
+            navigate('/login')
         }catch (e) {
             console.log(e)
         }
     }
     return (
-        <div>
-            <div className={'container_admin'}>
-                <div className={'container_admin_header'}>
+        <>
+            <AppBar position="static" color="secondary">
+                <Toolbar>
+                    <Typography
+                        variant="h6"
+                        sx={{ flexGrow: 1 }}>
+                        Pet_Project
+                    </Typography>
+                    <Typography
+                        sx={{ flexGrow: 1 }}>
+                        <Link to={''} className={'link'}>Users</Link>
+                    </Typography>
+                    <Typography
+                        sx={{ flexGrow: 1 }}>
+                        <Link to={'companies'} className={'link'}>Companies</Link>
+                    </Typography>
 
-                    <div className={'header'}>
-                        <Link to={'users'}>Users</Link>
-                    </div>
-
-                    <div className={'header'}>
-                        <Link to={'companies'}>Companies</Link>
-                    </div>
-
-                    <div className={'header_logout'}>
-                        <Link to={'login'} onClick={logout} >Logout</Link>
-                    </div>
-
-                </div>
-                <div className={'container_admin_outlet'}>
-                    <Outlet/>
-                </div>
-            </div>
-        </div>
+                    <Button color="inherit" onClick={logout} endIcon={<Logout/>}></Button>
+                </Toolbar>
+            </AppBar>
+            <Outlet/>
+        </>
     );
 };
 

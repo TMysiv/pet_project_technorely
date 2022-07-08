@@ -43,10 +43,11 @@ const Companies = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell>Name</TableCell>
-                            <TableCell align="right">Address</TableCell>
-                            <TableCell align="right">Service Of Activity</TableCell>
-                            <TableCell align="right">Number Of Employees</TableCell>
-                            <TableCell align="right">Description</TableCell>
+                            <TableCell align="center">Address</TableCell>
+                            <TableCell align="center">Service Of Activity</TableCell>
+                            <TableCell align="center">Number Of Employees</TableCell>
+                            <TableCell align="center">Description</TableCell>
+                            <TableCell align="center">Type</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -58,10 +59,11 @@ const Companies = () => {
                                 <TableCell component="th" scope="row">
                                     {company && company.name}
                                 </TableCell>
-                                <TableCell align="right">{company.address}</TableCell>
-                                <TableCell align="right">{company.serviceOfActivity}</TableCell>
-                                <TableCell align="right">{company.numberOfEmployees}</TableCell>
-                                <TableCell align="right">{company.description}</TableCell>
+                                <TableCell align="center">{company.address}</TableCell>
+                                <TableCell align="center">{company.serviceOfActivity}</TableCell>
+                                <TableCell align="center">{company.numberOfEmployees}</TableCell>
+                                <TableCell align="center">{company.description}</TableCell>
+                                <TableCell align="center">{company.type}</TableCell>
                                 <Box><Button color="success">Update</Button></Box>
                                 <Box><Button color="error" onClick={() => {
                                     removeCompany(company.id)

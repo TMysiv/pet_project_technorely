@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import {Controller, Delete, Get, Param, UseGuards} from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuards, RoleGuards } from '../auth/guards';
 import { AdminService } from './admin.service';
@@ -58,5 +58,19 @@ export class AdminController {
   @Get('/role/:userId')
   addRole(@Param('userId') userId: string) {
     return this.adminService.addRole(Number(userId));
+  }
+
+  @ApiOperation({ summary: 'Delete User' })
+  @UseGuards(RoleGuards)
+  @Delete('/user/:userId')
+  deleteUser(@Param('userId') userId: string) {
+    return this.adminService.deleteUser(Number(userId));
+  }
+
+  @ApiOperation({ summary: 'Delete Company' })
+  @UseGuards(RoleGuards)
+  @Delete('/company/:companyId')
+  deleteCompany(@Param('companyId') companyId: string) {
+    return this.adminService.deleteCompany(Number(companyId));
   }
 }

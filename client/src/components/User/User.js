@@ -1,6 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useNavigate} from "react-router";
-import {Typography, Button, Table, Paper, TableRow, TableCell, Box} from "@mui/material";
+import {
+    Typography,
+    Button,
+    Table,
+    Paper,
+    TableRow,
+    TableCell,
+    Box,
+    Dialog,
+    DialogTitle,
+    DialogContent, TextField, DialogActions
+} from "@mui/material";
 import {useDispatch} from "react-redux";
 
 import {userService} from "../../services/user.service";
@@ -8,6 +19,8 @@ import {deleteUser} from "../../store/user.slice";
 
 const User = ({user}) => {
     const {id} = user;
+
+    const [open,setOpen] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -20,6 +33,18 @@ const User = ({user}) => {
         await userService.deleteUserById(id)
         dispatch(deleteUser())
         navigate('signup')
+    }
+
+    const handleOpen = () => {
+        setOpen(true)
+    }
+    const handleClose = () => {
+        setOpen(false)
+    }
+
+    const update = (data) => {
+        setOpen(false);
+        console.log(data)
     }
 
     return (
@@ -76,14 +101,42 @@ const User = ({user}) => {
                     </TableCell>
                 </TableRow>
             </Table>
+
             <Box display="flex" justifyContent="center" margin={2}>
                 <Box marginRight={2}>
-                    <Button variant="contained" color="success" onClick={updateUser}>Update</Button>
+                    <Button variant="contained" color="success" onClick={handleOpen}>Update</Button>
                 </Box>
                 <Box>
                     <Button variant="contained" color="error" onClick={removeUser}>Delete</Button>
                 </Box>
             </Box>
+
+            <Dialog open={open} onClose={handleClose}  aria-labelledby="from-dialog-title">
+                    <DialogTitle id="from-dialog-title">Update User</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="email"
+                            type="email"
+                            fullWidth
+                        />
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="pass"
+                            label="pass"
+                            type="password"
+                            fullWidth
+                        />
+                    </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cansel</Button>
+                    <Button onClick={update}>Update</Button>
+                </DialogActions>
+
+            </Dialog>
         </Paper>
 
     );
