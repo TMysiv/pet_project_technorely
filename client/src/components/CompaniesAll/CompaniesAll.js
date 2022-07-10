@@ -24,7 +24,6 @@ const CompaniesAll = () => {
 
     }
 
-
     return (
         <>
             <TableContainer component={Paper}>
@@ -55,7 +54,6 @@ const CompaniesAll = () => {
                                 <TableCell align="center">{company.type}</TableCell>
                                 <Box display="flex">
 
-                                    <Box><Button color="success" >Update</Button></Box>
                                     <Box><Button color="error"  onClick={()=> deleteCompany(company.id)}>Delete</Button></Box>
                                 </Box>
 

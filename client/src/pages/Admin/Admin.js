@@ -5,7 +5,6 @@ import {AppBar, Button, Toolbar, Typography} from "@mui/material";
 import {Logout} from "@mui/icons-material";
 
 import {authService} from "../../services/auth.service";
-import css from './style.css';
 
 const Admin = () => {
 
@@ -31,7 +30,11 @@ const navigate = useNavigate();
                     </Typography>
                     <Typography
                         sx={{ flexGrow: 1 }}>
-                        <Link to={''} className={'link'}>Users</Link>
+                        <Link to={''} className={'link'}>Profile</Link>
+                    </Typography>
+                    <Typography
+                        sx={{ flexGrow: 1 }}>
+                        <Link to={'users'} className={'link'}>Users</Link>
                     </Typography>
                     <Typography
                         sx={{ flexGrow: 1 }}>

@@ -4,10 +4,10 @@ import {adminService} from "../services/admin.service";
 
 export const getAllUsers = createAsyncThunk(
     'adminSlice/getAllUsers',
-    async (_,{rejectWithValue}) => {
+    async (_, {rejectWithValue}) => {
         try {
             return adminService.getUsers()
-        }catch (e) {
+        } catch (e) {
             return rejectWithValue(e.message)
         }
     }
@@ -15,10 +15,10 @@ export const getAllUsers = createAsyncThunk(
 
 export const getAllCompanies = createAsyncThunk(
     'adminSlice/getAllCompanies',
-    async (_,{rejectWithValue}) => {
+    async (_, {rejectWithValue}) => {
         try {
             return adminService.getCompanies()
-        }catch (e) {
+        } catch (e) {
             return rejectWithValue(e.message)
         }
     }
@@ -27,17 +27,17 @@ export const getAllCompanies = createAsyncThunk(
 const adminSlice = createSlice({
     name: 'adminSlice',
     initialState: {
-        users:[],
-        companies:[],
-        error:null
+        users: [],
+        companies: [],
+        error: null
     },
     reducers: {
-        removeUser: (state,action) =>{
+        removeUser: (state, action) => {
             state.users = state.users.filter(user => user.id !== action.payload.userId);
         },
-        removeCompany: (state,action) =>{
+        removeCompany: (state, action) => {
             state.companies = state.companies.filter(company => company.id !== action.payload.companyId);
-        },
+        }
     },
     extraReducers: {
         [getAllUsers.fulfilled]: (state, action) => {
@@ -57,4 +57,4 @@ const adminSlice = createSlice({
 
 const adminReducer = adminSlice.reducer;
 export default adminReducer;
-export const {removeUser,removeCompany} = adminSlice.actions
+export const {removeUser, removeCompany} = adminSlice.actions

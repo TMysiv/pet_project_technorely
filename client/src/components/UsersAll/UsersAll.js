@@ -3,16 +3,14 @@ import {useEffect} from 'react';
 import {useSelector,useDispatch} from "react-redux";
 import {
     Box,
-    Button, InputLabel,
-    MenuItem,
-    Paper, Select,
+    Button,
+        Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
     TableRow,
-    FormControl
 } from "@mui/material";
 
 import {getAllUsers, removeUser} from "../../store/admin.slice";
@@ -36,6 +34,14 @@ const UsersAll = () => {
             console.log(e)
         }
 
+    }
+    
+    const updateUser = async (userId) =>{
+        try {
+            await adminService.updateUserRole(userId)
+        }catch (e) {
+            console.log(e)
+        }
     }
 
     return (
@@ -72,7 +78,7 @@ const UsersAll = () => {
                                 <TableCell align="center">{user.role}</TableCell>
                                 <Box display="flex">
 
-                                    <Box><Button color="success" >Update</Button></Box>
+                                    <Box><Button color="success" onClick={() => updateUser(user.id)}>Update Role</Button></Box>
                                     <Box><Button color="error" onClick={()=> deleteUser(user.id)}>Delete</Button></Box>
                                 </Box>
 

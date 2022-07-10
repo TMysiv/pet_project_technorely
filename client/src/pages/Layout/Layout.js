@@ -1,12 +1,10 @@
 import React from 'react';
 import {Outlet, useNavigate} from "react-router";
-
-import css from './style.css';
 import {AppBar, Toolbar, Typography, Button} from "@mui/material";
-import {authService} from "../../services/auth.service";
 import {Link} from "react-router-dom";
 import {Logout} from "@mui/icons-material";
 
+import {authService} from "../../services/auth.service";
 
 const Layout = () => {
 

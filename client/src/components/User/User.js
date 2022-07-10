@@ -69,7 +69,7 @@ const User = ({user}) => {
                 <TableRow>
                     <TableCell>
                         <Typography>
-                            <b>Last Name:</b>{user.lastName}
+                            <b>Last Name:</b> {user.lastName}
                         </Typography>
                     </TableCell>
                 </TableRow>
@@ -108,6 +108,7 @@ const User = ({user}) => {
                         </Typography>
                     </TableCell>
                 </TableRow>
+
             </Table>
 
             <Box display="flex" justifyContent="center" margin={2}>

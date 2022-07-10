@@ -1,5 +1,6 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {companyService} from "../services/company.service";
+import {userService} from "../services/user.service";
 
 export const getCompaniesById = createAsyncThunk(
     'companySlice/getCompaniesById',
@@ -17,6 +18,17 @@ export const createCompany = createAsyncThunk(
     async ({userId,data}, {rejectWithValue}) => {
         try {
             return companyService.createCompany(userId,data);
+        } catch (e) {
+            return rejectWithValue(e.message);
+        }
+    }
+);
+
+export const updateCompanyById = createAsyncThunk(
+    'companySlice/updateCompanyById',
+    async ({userId,companyId,data}, {rejectWithValue}) => {
+        try {
+            return companyService.updateCompany(id,companyId,data);
         } catch (e) {
             return rejectWithValue(e.message);
         }
@@ -42,9 +54,16 @@ const companySlice = createSlice({
             state.error = action.payload
         },
         [createCompany.fulfilled]: (state, action) => {
-            state.companies = state.companies.push(action.payload)
+            state.companies.push(action.payload)
         },
         [createCompany.rejected]: (state, action) => {
+            state.error = action.payload
+        },
+        [updateCompanyById.fulfilled]: (state, action) => {
+            state.companies = state.companies.filter(company => company.id !== action.payload.id);
+            state.companies.push(action.payload)
+        },
+        [updateCompanyById.rejected]: (state, action) => {
             state.error = action.payload
         }
     }

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import {useNavigate} from "react-router";
 import jwt_decode from 'jwt-decode';
 import {
     Table,
@@ -14,11 +13,11 @@ import {
     DialogTitle, DialogContent, TextField, DialogActions, Dialog
 } from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
+import {useForm} from "react-hook-form";
 
 import {createCompany, getCompaniesById} from "../../store/company.slice";
 import {companyService} from "../../services/company.service";
 import {deleteCompany} from '../../store/company.slice'
-import {useForm} from "react-hook-form";
 
 const Companies = () => {
 
@@ -33,7 +32,6 @@ const Companies = () => {
     const {companies} = useSelector(state => state['companyReducer']);
     const dispatch = useDispatch();
 
-    const navigate = useNavigate();
 
     useEffect(() => {
         dispatch(getCompaniesById({userId}))
@@ -48,12 +46,6 @@ const Companies = () => {
         }
     }
 
-    const handleOpen = () => {
-        setOpen(true)
-    }
-    const handleClose = () => {
-        setOpen(false)
-    }
 
     const newCompany = (data) =>{
         try{
@@ -63,6 +55,13 @@ const Companies = () => {
         }catch (error) {
             setFormError(error.response.data.message)
         }
+    }
+
+    const handleOpen = () => {
+        setOpen(true)
+    }
+    const handleClose = () => {
+        setOpen(false)
     }
 
     return (
@@ -80,13 +79,13 @@ const Companies = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {companies.map((company) => (
+                        {companies && companies.map((company) => (
                             <TableRow
                                 key={company.id}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
                             >
                                 <TableCell component="th" scope="row">
-                                    {company && company.name}
+                                    {company.name}
                                 </TableCell>
                                 <TableCell align="center">{company.address}</TableCell>
                                 <TableCell align="center">{company.serviceOfActivity}</TableCell>
@@ -104,6 +103,7 @@ const Companies = () => {
                             <Button variant="contained" onClick={handleOpen}>Create</Button>
                         </Box>
                     </TableBody>
+
                 </Table>
             </TableContainer>
 
@@ -117,6 +117,7 @@ const Companies = () => {
                             margin="dense"
                             label="name"
                             fullWidth
+                            size="small"
                             {...register('name', {required: "Required field"})}
                             error={!!errors?.name}
                             helperText={errors?.name ? errors.name.message : null}
@@ -126,6 +127,8 @@ const Companies = () => {
                             margin="dense"
                             label="address"
                             fullWidth
+                            size="small"
+
                             {...register('address', {required: "Required field"})}
                             error={!!errors?.address}
                             helperText={errors?.address ? errors.address.message : null}
@@ -135,6 +138,8 @@ const Companies = () => {
                             margin="dense"
                             label="serviceOfActivity"
                             fullWidth
+                            size="small"
+
                             {...register('serviceOfActivity', {required: "Required field"})}
                             error={!!errors?.serviceOfActivity}
                             helperText={errors?.serviceOfActivity ? errors.serviceOfActivity.message : null}
@@ -144,6 +149,8 @@ const Companies = () => {
                             margin="dense"
                             label="numberOfEmployees"
                             fullWidth
+                            size="small"
+
                             {...register('numberOfEmployees', {required: "Required field"})}
                             error={!!errors?.numberOfEmployees}
                             helperText={errors?.numberOfEmployees ? errors.numberOfEmployees.message : null}
@@ -153,6 +160,7 @@ const Companies = () => {
                             margin="dense"
                             label="description"
                             fullWidth
+                            size="small"
                             {...register('description', {required: "Required field"})}
                             error={!!errors?.description}
                             helperText={errors?.description ? errors.description.message : null}
@@ -163,6 +171,7 @@ const Companies = () => {
                             margin="dense"
                             label="type"
                             fullWidth
+                            size="small"
                             {...register('type', {required: "Required field"})}
                             error={!!errors?.type}
                             helperText={errors?.type ? errors.type.message : null}
@@ -176,10 +185,10 @@ const Companies = () => {
                         <Button type="submit" color="success">Create</Button>
                     </DialogActions>
 
-                    {formError && formError.map(err =><li key={new Date().getDate()}>{err}</li>)}
                 </form>
 
             </Dialog>
+
 
         </>
     );

@@ -3,3 +3,13 @@
     margin: 0;
     box-sizing: border-box;
 }
+.link {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+}
+
+.link:hover {
+    color: yellow;
+    border-bottom: 1px solid white;
+}
