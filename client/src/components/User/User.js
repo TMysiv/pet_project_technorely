@@ -13,9 +13,9 @@ import {
     DialogContent, TextField, DialogActions
 } from "@mui/material";
 import {useDispatch} from "react-redux";
-import {deleteUser, updateUserById} from "../../store/user.slice";
 import {useForm} from "react-hook-form";
 
+import {deleteUser, updateUserById} from "../../store/user.slice";
 import {userService} from "../../services/user.service";
 
 const User = ({user}) => {

@@ -15,10 +15,11 @@ import {useLocation} from "react-router-dom";
 import {useState} from "react";
 import {useDispatch} from "react-redux";
 import {useForm} from "react-hook-form";
-import {companyService} from "../../services/company.service";
-import {deleteCompany, updateCompanyById} from "../../store/company.slice";
 import jwt_decode from "jwt-decode";
 import {useNavigate} from "react-router";
+
+import {companyService} from "../../services/company.service";
+import {deleteCompany, updateCompanyById} from "../../store/company.slice";
 
 const CompanyDetail = () => {
 

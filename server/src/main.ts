@@ -16,6 +16,7 @@ async function start() {
     .setVersion('1.0.0')
     .addTag('TMysiv')
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/api/docs', app, document);
 

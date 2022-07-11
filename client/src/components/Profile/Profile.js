@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import jwt_decode from "jwt-decode";
+import {useDispatch, useSelector} from "react-redux";
 
 import User from "../User/User";
-import {useDispatch, useSelector} from "react-redux";
 import {getUserById} from "../../store/user.slice";
 
 const Profile = () => {
