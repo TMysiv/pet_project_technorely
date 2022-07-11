@@ -37,6 +37,7 @@ export class CompaniesService {
     companyId: number,
     updateDto: UpdateCompanyDto,
   ): Promise<Company> {
+
     return this.prismaService.company.update({
       where: { id: companyId },
       data: {

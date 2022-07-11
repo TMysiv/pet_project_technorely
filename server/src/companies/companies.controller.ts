@@ -89,7 +89,7 @@ export class CompaniesController {
   }
 
   @ApiOperation({ summary: 'Update Company by id' })
-  @Put('/:userId/:companyId')
+  @Put('/:companyId')
   @ApiOkResponse({
     status: 200,
     schema: {
@@ -108,7 +108,6 @@ export class CompaniesController {
   updateCompany(
     @Body() updateDto: UpdateCompanyDto,
     @Param('companyId') companyId: string,
-    @Param('userId') userId: string,
   ) {
     return this.companiesService.updateCompanyById(
       Number(companyId),

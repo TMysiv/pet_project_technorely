@@ -1,6 +1,5 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import {companyService} from "../services/company.service";
-import {userService} from "../services/user.service";
 
 export const getCompaniesById = createAsyncThunk(
     'companySlice/getCompaniesById',
@@ -26,9 +25,9 @@ export const createCompany = createAsyncThunk(
 
 export const updateCompanyById = createAsyncThunk(
     'companySlice/updateCompanyById',
-    async ({userId,companyId,data}, {rejectWithValue}) => {
+    async ({id,data}, {rejectWithValue}) => {
         try {
-            return companyService.updateCompany(id,companyId,data);
+            return companyService.updateCompany(id,data);
         } catch (e) {
             return rejectWithValue(e.message);
         }

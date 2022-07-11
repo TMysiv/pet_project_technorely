@@ -11,6 +11,7 @@ import Admin from "./pages/Admin/Admin";
 import UsersAll from "./components/UsersAll/UsersAll";
 import CompaniesAll from "./components/CompaniesAll/CompaniesAll";
 import NotFound from "./pages/NotFound/NotFound";
+import CompanyDetail from "./components/CompanyDetail/CompanyDetail";
 
 function App() {
 
@@ -21,7 +22,10 @@ function App() {
                 <Route path={'/'} element={<RequireAuth><Layout/></RequireAuth>}>
                     <Route index element={<Profile/>}/>
                     <Route path={'/companies'} element={<Companies/>}/>
+                    <Route path={'/companies/:id'} element={<CompanyDetail/>}/>
+
                 </Route>
+
                 <Route path={'admin'} element={<AdminAuth><Admin/></AdminAuth>}>
                     <Route index element={<Profile/>}/>
                     <Route path={'users'} element={<UsersAll/>}/>

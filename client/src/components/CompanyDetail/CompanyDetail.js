@@ -1,26 +1,26 @@
-import React, {useEffect, useState} from 'react';
-import jwt_decode from 'jwt-decode';
+import React from 'react';
 import {
+    Box,
+    Button,
+    Paper,
     Table,
+    TableBody,
     TableCell,
-    TableContainer,
     TableHead,
     TableRow,
-    TableBody,
-    Paper,
-    Button,
-    Box,
-    DialogTitle, DialogContent, TextField, DialogActions, Dialog
+    TableContainer,
+    Dialog, DialogTitle, DialogContent, TextField, DialogActions
 } from "@mui/material";
-import {useDispatch, useSelector} from "react-redux";
+import {useLocation} from "react-router-dom";
+import {useState} from "react";
+import {useDispatch} from "react-redux";
 import {useForm} from "react-hook-form";
-import {Link} from "react-router-dom";
+import {companyService} from "../../services/company.service";
+import {deleteCompany, updateCompanyById} from "../../store/company.slice";
+import jwt_decode from "jwt-decode";
+import {useNavigate} from "react-router";
 
-import {createCompany, getCompaniesById} from "../../store/company.slice";
-
-import css from './style.css'
-
-const Companies = () => {
+const CompanyDetail = () => {
 
     const [open, setOpen] = useState(false);
 
@@ -31,21 +31,31 @@ const Companies = () => {
     const token = localStorage.getItem('token');
     const {userId} = jwt_decode(token);
 
-    const {companies} = useSelector(state => state['companyReducer']);
     const dispatch = useDispatch();
 
+    const navigate = useNavigate()
 
-    useEffect(() => {
-        dispatch(getCompaniesById({userId}))
-    }, []);
+    const {state} = useLocation();
+    const {id} = state;
 
-
-    const newCompany = (data) => {
+    const removeCompany = async (companyId) => {
         try {
-            setOpen(false)
-            dispatch(createCompany({userId, data}))
+            await companyService.deleteCompany(userId, companyId);
+            dispatch(deleteCompany({companyId}))
+            navigate('/companies')
+
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const updateCompany =  (data) =>{
+        try {
+            setOpen(false);
+            dispatch(updateCompanyById({id,data}))
             reset()
-        } catch (error) {
+            navigate('/companies')
+        }catch (error) {
             setFormError(error.response.data.message)
         }
     }
@@ -60,6 +70,7 @@ const Companies = () => {
     return (
         <>
             <TableContainer component={Paper}>
+
                 <Table sx={{minWidth: 650}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
@@ -67,37 +78,46 @@ const Companies = () => {
                             <TableCell align="center">Address</TableCell>
                             <TableCell align="center">Service Of Activity</TableCell>
                             <TableCell align="center">Number Of Employees</TableCell>
+                            <TableCell align="center">Description</TableCell>
+                            <TableCell align="center">Type</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {companies && companies.map((company) => (
-                            <TableRow
-                                key={company.id}
-                                sx={{'&:last-child td, &:last-child th': {border: 0}}}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {company.name}
-                                </TableCell>
-                                <TableCell align="center">{company.address}</TableCell>
-                                <TableCell align="center">{company.serviceOfActivity}</TableCell>
-                                <TableCell align="center">{company.numberOfEmployees}</TableCell>
-                                <Box><Button color="success"><Link
-                                    to={`${company.id}`.toString()} state={company}>Details</Link></Button></Box>
-                            </TableRow>
 
-                        ))}
-                        <Box margin={2}>
-                            <Button variant="contained" onClick={handleOpen}>Create</Button>
+                        <TableRow
+                            key={state.id}
+                            sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                        >
+                            <TableCell component="th" scope="row">
+                                {state.name}
+                            </TableCell>
+                            <TableCell align="center">{state.address}</TableCell>
+                            <TableCell align="center">{state.serviceOfActivity}</TableCell>
+                            <TableCell align="center">{state.numberOfEmployees}</TableCell>
+                            <TableCell align="center">{state.description}</TableCell>
+                            <TableCell align="center">{state.type}</TableCell>
+                        </TableRow>
+                        <Box display="flex" margin={2}>
+                            <Box marginRight={2}>
+                                <Button variant="contained" color="success" onClick={handleOpen}>Update</Button>
+                            </Box>
+                            <Box>
+                                <Button variant="contained" color="error" onClick={()=> {
+                                    removeCompany(state.id)
+                                }}>Delete</Button>
+                            </Box>
                         </Box>
+
+
                     </TableBody>
 
                 </Table>
             </TableContainer>
 
             <Dialog open={open} onClose={handleClose} aria-labelledby="from-dialog-title">
-                <DialogTitle id="from-dialog-title">Create Company</DialogTitle>
+                <DialogTitle id="from-dialog-title">Update Company</DialogTitle>
 
-                <form onSubmit={handleSubmit(newCompany)}>
+                <form onSubmit={handleSubmit(updateCompany)}>
                     <DialogContent>
                         <TextField
                             autoFocus
@@ -109,17 +129,7 @@ const Companies = () => {
                             error={!!errors?.name}
                             helperText={errors?.name ? errors.name.message : null}
                         />
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            label="address"
-                            fullWidth
-                            size="small"
 
-                            {...register('address', {required: "Required field"})}
-                            error={!!errors?.address}
-                            helperText={errors?.address ? errors.address.message : null}
-                        />
                         <TextField
                             autoFocus
                             margin="dense"
@@ -169,9 +179,9 @@ const Companies = () => {
 
                     <DialogActions>
                         <Button onClick={handleClose} color="error">Cansel</Button>
-                        <Button type="submit" color="success">Create</Button>
+                        <Button type="submit" color="success">Update</Button>
                     </DialogActions>
-                    {formError && formError.map(err => <li key={new Date().getDate()}>{err}</li>)}
+                    {formError && formError.map(err =><li key={new Date().getDate()}>{err}</li>)}
 
                 </form>
 
@@ -181,4 +191,4 @@ const Companies = () => {
     );
 };
 
-export default Companies;
+export default CompanyDetail;
