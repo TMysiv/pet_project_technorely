@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import {Route, Routes} from 'react-router-dom'
+
+import Registration from "./pages/Registration/Registration";
+import Login from "./pages/Login/Login";
+import Layout from "./pages/Layout/Layout";
+import Profile from "./components/Profile/Profile";
+import Companies from "./components/Companies/Companies";
+import RequireAuth from "./hok/RequireAuth";
+import AdminAuth from "./hok/AdminAuth";
+import Admin from "./pages/Admin/Admin";
+import UsersAll from "./components/UsersAll/UsersAll";
+import CompaniesAll from "./components/CompaniesAll/CompaniesAll";
+import NotFound from "./pages/NotFound/NotFound";
+import CompanyDetail from "./components/CompanyDetail/CompanyDetail";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    return (
+        <>
+            <Routes>
+
+                <Route path={'/'} element={<RequireAuth><Layout/></RequireAuth>}>
+                    <Route index element={<Profile/>}/>
+                    <Route path={'/companies'} element={<Companies/>}/>
+                    <Route path={'/companies/:id'} element={<CompanyDetail/>}/>
+
+                </Route>
+
+                <Route path={'admin'} element={<AdminAuth><Admin/></AdminAuth>}>
+                    <Route index element={<Profile/>}/>
+                    <Route path={'users'} element={<UsersAll/>}/>
+                    <Route path={'companies'} element={<CompaniesAll/>}/>
+                </Route>
+
+                <Route path={'/signup'} element={<Registration/>}/>
+                <Route path={'/login'} element={<Login/>}/>
+                <Route path='*' element={<NotFound/>}/>
+
+            </Routes>
+        </>
+    );
 }
 
 export default App;
